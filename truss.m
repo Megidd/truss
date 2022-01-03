@@ -15,16 +15,16 @@ Nodes = [0	0
     ];
 % Elements=input('input element data in [Node-i Node-j A E] format. 1st row belongs to the element 1:');
 Elements = [1	2	0.000302	2.00E+11
-    1	3	0.000302	2.00E+11
-    2	4	0.000302	2.00E+11
-    3	2	0.000302	2.00E+11
-    3	4	0.000302	2.00E+11
-    3	5	0.000302	2.00E+11
-    4	6	0.000302	2.00E+11
-    3	6	0.000302	2.00E+11
-    5	6	0.000302	2.00E+11
+        1	3	0.000302	2.00E+11
+        2	4	0.000302	2.00E+11
+        3	2	0.000302	2.00E+11
+        3	4	0.000302	2.00E+11
+        3	5	0.000302	2.00E+11
+        4	6	0.000302	2.00E+11
+        3	6	0.000302	2.00E+11
+        5	6	0.000302	2.00E+11
 
-    ];
+        ];
 
 %Fext=input('input nodal external force in "N" with format of [Node Magnitude Agnle]:');
 Fext = [3	50000	0
@@ -34,8 +34,8 @@ Fext = [3	50000	0
 
 %Supports=input('input Boundary conditions with [Node type Orientation]:');
 Supports = [1	2	0
-    2	2	0
-    ];
+        2	2	0
+        ];
 %% Element Stiffness Calculation
 for i = 1:size(Elements, 1)
     n1 = Elements (i, 1);
@@ -59,9 +59,9 @@ for i = 1:size(Elements, 1)
     C = cos(Tet(i));
 
     k{i} = E * A / L(i) * [C^2 S * C -C^2 -S * C;
-                S * C S^2 -C * S -S^2;
-                -C^2 -S * C C^2 S * C;
-                -S * C -S^2 C * S S^2];
+                        S * C S^2 -C * S -S^2;
+                        -C^2 -S * C C^2 S * C;
+                        -S * C -S^2 C * S S^2];
 end
 
 %% Global Stiffness Assemble
