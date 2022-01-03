@@ -122,44 +122,64 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Iteration start
 
-%% Solving Equation
+% Node location in meter in [x y] directions.
+loc = [
+    0	0
+    0	0
+    0	0
+    0	0
+    0	0
+    0	0
+    ];
 
-Kc = K;
-Fc = F0;
+loc_prev = Nodes;
 
-Kc(:, zeroDOF) = []; %removing total stiffness columns with zero DOF
-Kc(zeroDOF, :) = []; %removing total stiffness rows with zero DOF
+go_ahead = true;
 
-Fc(zeroDOF, :) = []; %removing force rows with zero DOF
+while go_ahead
 
-U0 = Kc^ - 1 * Fc; %Non-zero nodal displacements
+    %% Solving Equation
 
-u_all = 1:2 * size(Nodes, 1);
-u_nonzero = u_all;
-u_nonzero(zeroDOF) = [];
+    Kc = K;
+    Fc = F0;
 
-U(u_all, 1) = 0;
-U(u_nonzero, 1) = U0; % Nodal displacement vector
+    Kc(:, zeroDOF) = []; %removing total stiffness columns with zero DOF
+    Kc(zeroDOF, :) = []; %removing total stiffness rows with zero DOF
 
-F = K * U; % Nodal force vector
+    Fc(zeroDOF, :) = []; %removing force rows with zero DOF
 
-%% Element Forces and Elongations
+    U0 = Kc^ - 1 * Fc; %Non-zero nodal displacements
 
-for i = 1:size(Elements, 1);
-    S = sin(Tet(i));
-    C = cos(Tet(i));
-    n1 = Elements(i, 1);
-    n2 = Elements(i, 2);
+    u_all = 1:2 * size(Nodes, 1);
+    u_nonzero = u_all;
+    u_nonzero(zeroDOF) = [];
 
-    Delta = [-C, -S, C, S] * [U(2 * n1 - 1); U(2 * n1); U(2 * n2 - 1); U(2 * n2)];
+    U(u_all, 1) = 0;
+    U(u_nonzero, 1) = U0; % Nodal displacement vector
 
-    A = Elements(i, 3);
-    E = Elements(i, 4);
+    F = K * U; % Nodal force vector
 
-    P = E * A / L(i) * Delta;
-    ElResult(i, 1) = Delta; %Element elongation
-    ElResult(i, 2) = P; %Element force
-    ElResult(i, 3) = P / A; %Element stress
+    %% Element Forces and Elongations
+
+    for i = 1:size(Elements, 1);
+        S = sin(Tet(i));
+        C = cos(Tet(i));
+        n1 = Elements(i, 1);
+        n2 = Elements(i, 2);
+
+        Delta = [-C, -S, C, S] * [U(2 * n1 - 1); U(2 * n1); U(2 * n2 - 1); U(2 * n2)];
+
+        A = Elements(i, 3);
+        E = Elements(i, 4);
+
+        P = E * A / L(i) * Delta;
+        ElResult(i, 1) = Delta; %Element elongation
+        ElResult(i, 2) = P; %Element force
+        ElResult(i, 3) = P / A; %Element stress
+    end
+
+    go_ahead = false;
+
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Iteration end
