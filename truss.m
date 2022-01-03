@@ -172,8 +172,11 @@ for i=1:size(Elements,1);
 end
 
  fprintf('\n')
-for i=1:size(U,1);
-    fprintf('Nodal (%g) Displacement: %g mm\n',i,U(i)*1000)
+ cntr = 1;
+for i=1:2:size(U,1);
+    fprintf('Node (%g) Displacement X: %g mm\n',cntr,U(i)*1000)
+    fprintf('Node (%g) Displacement Y: %g mm\n',cntr,U(i+1)*1000)
+    cntr++;
 end
 
        
