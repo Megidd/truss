@@ -25,5 +25,5 @@ https://wiki.octave.org/Octave_for_openSUSE
 Program can be run by:
 
 ```bash
-octave initial.m
+octave truss.m
 ```
