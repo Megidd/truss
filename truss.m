@@ -120,6 +120,8 @@ for i = 1:size(Supports, 1);
 
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Iteration start
+
 %% Solving Equation
 
 Kc = K;
@@ -159,6 +161,8 @@ for i = 1:size(Elements, 1);
     ElResult(i, 2) = P; %Element force
     ElResult(i, 3) = P / A; %Element stress
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Iteration end
 
 %%Display Results
 
